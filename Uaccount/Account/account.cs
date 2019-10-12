@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace account
 {
-    private class Account
+    public class Account
     {
         String bank;
         Double amount;
