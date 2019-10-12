@@ -15,6 +15,6 @@ namespace Uaccount.Model
         public List<Owner> owners { get; set; }
         public Balance balance { get; set; }
         public string bank_id { get; set; }
-        public AccountRouting acoount_routing { get; set; }
+        public AccountRouting account_routing { get; set; }
     }
 }

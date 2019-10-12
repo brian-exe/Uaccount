@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using Uaccount.Model;
 using RestSharp;
 
 namespace Uaccount.Controllers
@@ -29,7 +30,41 @@ namespace Uaccount.Controllers
 
             IRestResponse response = client.Execute(request);
             List <Model.Account> userObj = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Model.Account>>(response.Content);
-            return response.Content ;
+            List<Model.AccountResponse> listResponse = new List<Model.AccountResponse>();
+
+            try
+            {
+                foreach (Model.Account acc in userObj)
+                {
+                    AccountResponse aux = new AccountResponse();
+                    aux.amount = acc.balance.amount;
+                    aux.bank = "BIND";
+                    aux.type = acc.type;
+                    aux.cbu = acc.account_routing.address;
+                    aux.id = acc.id;
+                    listResponse.Add(aux);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            listResponse.AddRange(GetFakeAccounts());
+            return JsonConvert.SerializeObject(listResponse);
+        }
+
+        private List<AccountResponse> GetFakeAccounts()
+        {
+            List<AccountResponse> list = new List<AccountResponse>();
+            list.Add(new AccountResponse() {
+                amount = 11111.2,
+                bank = "SANTANDER",
+                type = "Cuenta Corriente",
+                cbu = "ABCDEFGHIJKL1234",
+                id = "1234",
+            });
+
+            return list;
         }
 
         // POST api/values
