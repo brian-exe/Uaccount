@@ -28,7 +28,7 @@ namespace Uaccount.Controllers
             request.AddHeader("Authorization", "JWT " + MyToken);
 
             IRestResponse response = client.Execute(request);
-
+            List <Model.Account> userObj = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Model.Account>>(response.Content);
             return response.Content ;
         }
 
